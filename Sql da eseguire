@@ -1,57 +1,17 @@
-CREATE DATABASE IF NOT EXISTS products_db;
+CREATE DATABASE IF NOT EXISTS tecWeb24;
 
-USE products_db;
+USE tecWeb24;
 
 CREATE TABLE IF NOT EXISTS`prodotti` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
   `nome` VARCHAR(255) NOT NULL,
   `marca_prodotto` VARCHAR(255),
   `categoria_prodotto` VARCHAR(255),
-  `codice` VARCHAR(50) UNIQUE NOT NULL,
+  `id` VARCHAR(50) PRIMARY KEY,
   `colore` VARCHAR(50),
   `genere` VARCHAR(50),
   `prezzo` DECIMAL(10, 2) NOT NULL,
   `immagine` VARCHAR(255)
 );
-
-CREATE TABLE IF NOT EXISTS utenti (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(60) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS carrello (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-	id_cliente int not null,
-	FOREIGN KEY (id_cliente) REFERENCES utenti(id)
-);
-CREATE TABLE IF NOT EXISTS wishlist (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente int not null,
-    FOREIGN KEY (id_cliente) REFERENCES utenti(id)
-);
-CREATE TABLE IF NOT EXISTS ordini (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    id_cliente int not null,
-    track varchar(255),
-    fattura varchar(255),
-    FOREIGN KEY (id_cliente) REFERENCES utenti(id)
-);
-CREATE TABLE IF NOT EXISTS prodotti_cart (
-	id_carrello int,
-    id_wishlist int,
-    id_ordine int,
-    id_prodotto varchar(255) not null,
-	data_inizio DATE,
-    data_fine DATE,
-    quantita INT,
-    CHECK (id_carrello IS NULL OR id_wishlist IS NULL OR id_ordine IS NULL),
-    FOREIGN KEY (id_prodotto) REFERENCES prodotti(id),
-	FOREIGN KEY (id_wishlist) REFERENCES wishlist(id),
-	FOREIGN KEY (id_ordine) REFERENCES ordini(id),
-    FOREIGN KEY (id_carrello) REFERENCES carrello(id)
-);
-
 -- POPOLAMENTO DB
 INSERT INTO `prodotti` (`nome`, `marca_prodotto`, `categoria_prodotto`, `id`, `colore`, `genere`, `prezzo`, `immagine`)
 
@@ -108,5 +68,45 @@ VALUES
 ('Anello Coco Brush Oro', 'Chanel', 'Anelli', 'ANL008', 'Multicolore', 'Donna', 29.99, 'ANELLO_COCO_BRUSH.png'),
 ('Anello Clash de Cartier', 'Cartier', 'Anelli', 'ANL009', 'Oro', 'Donna', 39.99, 'ANELLO_CLASH_DE_CARTIER.png'),
 ('Anello Trinity', 'Cartier', 'Anelli', 'ANL010', 'Multicolore', 'Donna', 29.99, 'ANELLO_TRINITY.png');
+
+
+CREATE TABLE IF NOT EXISTS utenti (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(60) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS carrello (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+	id_cliente int not null,
+	FOREIGN KEY (id_cliente) REFERENCES utenti(id)
+);
+CREATE TABLE IF NOT EXISTS wishlist (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente int not null,
+    FOREIGN KEY (id_cliente) REFERENCES utenti(id)
+);
+CREATE TABLE IF NOT EXISTS ordini (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente int not null,
+    track varchar(255),
+    fattura varchar(255),
+    FOREIGN KEY (id_cliente) REFERENCES utenti(id)
+);
+CREATE TABLE IF NOT EXISTS prodottiUtente (
+	id_carrello int,
+    id_wishlist int,
+    id_ordine int,
+    id_prodotto varchar(50) not null,
+	data_inizio DATE,
+    data_fine DATE,
+    quantita INT,
+    CHECK (id_carrello IS NULL OR id_wishlist IS NULL OR id_ordine IS NULL),
+    FOREIGN KEY (id_prodotto) REFERENCES prodotti(id),
+	FOREIGN KEY (id_wishlist) REFERENCES wishlist(id),
+	FOREIGN KEY (id_ordine) REFERENCES ordini(id),
+    FOREIGN KEY (id_carrello) REFERENCES carrello(id)
+);
+
 
 
